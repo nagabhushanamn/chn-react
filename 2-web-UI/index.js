@@ -67,7 +67,7 @@ function NewClock(props) {
 }
 
 setInterval(() => {
-    ReactDOM.render(NewClock({ timeZone: 'Asia/Kolkata' }), asia_kolkata_ele_v2)
-    ReactDOM.render(NewClock({ timeZone: 'Asia/Dubai' }), asia_dubai_ele_v2)
-    ReactDOM.render(NewClock({ timeZone: 'America/New_york' }), ameria_newyork_ele_v2)
+    ReactDOM.render(<NewClock timeZone= 'Asia/Kolkata' />, asia_kolkata_ele_v2)
+    ReactDOM.render(<NewClock timeZone= 'Asia/Dubai' />, asia_dubai_ele_v2)
+    ReactDOM.render(<NewClock timeZone= 'America/New_york'/>, ameria_newyork_ele_v2)
 }, 1000);
