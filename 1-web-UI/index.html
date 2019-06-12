@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="container">
+    <hr />
+    <h1>web UI</h1>
+    <hr />
+
+    <div id="box1" class="alert alert-danger">
+        <input id="inp1" type="number" onchange="handleChange()" />
+        <hr />
+        <span id="display" class="badge badge-primary">0</span>
+    </div>
+
+    <script>
+
+        var inp1 = document.getElementById('inp1');
+        const applnState = {
+            count: 0
+        }
+        setInterval(() => {
+            applnState.count++;
+            inp1.value = applnState.count
+            inp1.dispatchEvent(new Event('change'))
+        }, 2000)
+
+        function handleChange() {
+            document.getElementById('display').innerHTML = applnState.count * 10;
+        }
+
+    </script>
+
+
+    <hr />
+    <span id="time" class="badge badge-danger">time</span>
+    <hr />
+    <button id="todos-btn" class="btn btn-dark"> Load top 5 todos</button>
+    <hr />
+    <span class="bg-info" id="message"></span>
+    <ul id="todos-list"></ul>
+    <hr />
+    <div class="alert alert-info">welcome to web UI!</div>
+
+    <button class="btn btn-primary">show</button>
+    <button class="btn btn-danger">hide</button>
+
+    <script src="./index.js"></script>
+
+</body>
+
+</html>
