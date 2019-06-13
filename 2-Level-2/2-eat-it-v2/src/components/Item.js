@@ -30,6 +30,12 @@ class Item extends Component {
             default: return null;
         }
     }
+    handleBuy() {
+        let { value: item, onBuy } = this.props;
+        if (onBuy) {
+            onBuy({ item })
+        }
+    }
     render() {
         let { value: item } = this.props;
         let { currentTab } = this.state;
@@ -42,7 +48,7 @@ class Item extends Component {
                     <div className="col-9 col-sm-9 col-md-9">
                         <h5>{item.name}</h5>
                         <h6>&#8377;{item.price}</h6>
-                        <button disabled={!item.canBuy} className="btn btn-primary btn-sm">buy</button>
+                        <button onClick={e => this.handleBuy(e)} disabled={!item.canBuy} className="btn btn-primary btn-sm">buy</button>
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
                                 <a onClick={e => this.changeTab(e, 1)} className={classNames('nav-link', { active: currentTab === 1 })} href="/">Description</a>
