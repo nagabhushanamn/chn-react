@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
+import Review from './Review';
 
 
 class Item extends Component {
@@ -14,12 +15,18 @@ class Item extends Component {
         e.preventDefault();
         this.setState({ currentTab: tabIndex })
     }
+    renderReviews() {
+        let { reviews } = this.state;
+        return reviews.map((review, idx) => {
+            return <Review value={review} key={idx} />
+        })
+    }
     renderTabPanel(item) {
         let { currentTab } = this.state;
         switch (currentTab) {
             case 1: return (<div>{item.description}</div>)
             case 2: return (<div>Not Yet</div>)
-            case 3: return (<div>???</div>)
+            case 3: return (<div>{this.renderReviews()}</div>)
             default: return null;
         }
     }
