@@ -26,12 +26,26 @@ class App extends React.Component {
         <button onClick={e => this.changeMessage('good morning')} className="btn btn-primary">GM</button>&nbsp;
         <button onClick={e => this.changeMessage('good noon')} className="btn btn-primary">GN</button>&nbsp;
         <button onClick={e => this.changeMessage('good evening')} className="btn btn-primary">GE</button>&nbsp;
+        <button onClick={e => this.changeMessage('')} className="btn btn-danger">Remove</button>&nbsp;
         <hr />
 
-        <Greeting message={this.state.message}/>
+        {this.state.message ? <Greeting message={this.state.message} /> : null}
 
       </div>
     );
+  }
+  componentDidMount() {
+    console.log("App :: componentDidMount()")
+    // setTimeout(() => {
+    //   let serverMessage = "Hello! from server-side"
+    //   this.setState({ message: serverMessage })
+    // }, 2000);
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("App :: componentDidUpdate()")
+  }
+  componentDidCatch(error, info){
+    console.log("App::componentDidCatch()")
   }
 }
 
