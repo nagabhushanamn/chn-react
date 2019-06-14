@@ -6,7 +6,7 @@ import axios from 'axios';
 class ItemList extends Component {
     state = {
         items: []
-    }
+    } 
     componentDidMount() {
         let apiUrl = "http://localhost:8181/api/items";
         axios
@@ -29,7 +29,7 @@ class ItemList extends Component {
                 </div>
             )
         })
-    } 
+    }
     render() {
         return (
             <div>

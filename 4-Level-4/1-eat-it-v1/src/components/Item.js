@@ -1,36 +1,30 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
 import Review from './Review';
-import axios from 'axios'
- 
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+
+import { loadReviews } from '../actions/reviews'
+import { buy } from '../actions/cart'
+
 class Item extends Component {
     state = {
         currentTab: 1,
-        reviews: []
     }
     changeTab(e, tabIndex) {
         e.preventDefault();
         this.setState({ currentTab: tabIndex }, () => {
-            if (tabIndex === 3) {
-                let { value: item } = this.props;
-                let { id } = item;
-                let apiUrl = `http://localhost:8181/api/items/${id}/reviews`;
-                axios
-                    .get(apiUrl)
-                    .then(response => response.data)
-                    .then(reviews => {
-                        reviews = reviews || []
-                        this.setState({ reviews })
-                    })
-            }
+            let id = this.props.value.id;
+            this.props.actions.loadReviews(id);
         })
     }
     renderReviews() {
-        let { reviews } = this.state;
+        let { reviews } = this.props;
         return reviews.map((review, idx) => {
             return <Review value={review} key={idx} />
         })
-    } 
+    }
     renderTabPanel(item) {
         let { currentTab } = this.state;
         switch (currentTab) {
@@ -41,10 +35,8 @@ class Item extends Component {
         }
     }
     handleBuy() {
-        let { value: item, onBuy } = this.props;
-        if (onBuy) {
-            onBuy({ item })
-        }
+        let { value: item } = this.props;
+        this.props.actions.buy(item, 1);
     }
     render() {
         let { value: item, qty } = this.props;
@@ -80,4 +72,21 @@ class Item extends Component {
     }
 }
 
-export default Item;
+// export default Item;
+
+
+function mapStateToProps(state, props) {
+    let { value } = props;
+    let { id } = value;
+    return {
+        reviews: state.reviews[id] || []
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({ loadReviews, buy }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Item)

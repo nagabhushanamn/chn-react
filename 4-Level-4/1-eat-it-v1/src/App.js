@@ -5,46 +5,31 @@ import CartBadge from './components/CartBadge';
 import CartView from './components/CartView';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
-
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+
+import { bindActionCreators } from 'redux'
+import { loadCart } from './actions/cart'
+
+import { connect } from 'react-redux'
 
 
 class App extends React.Component {
-
-  state = {
-    cart: {},
+  componentDidMount() {
+    this.props.actions.loadCart('Nag')
   }
-
-  addToCart(e) {
-    let { item } = e; 
-    let { id } = item;
-    let { cart } = this.state;
-    let itemLine = cart[id];
-    if (!itemLine) {
-      itemLine = { item, qty: 1 }
-    } else {
-      itemLine = { item, qty: itemLine.qty + 1 }
-    }
-    cart = { ...cart, [id]: itemLine }
-    this.setState({ cart })
-  }
-
   renderCart() {
-    let { cart } = this.state;
-    return <CartView value={cart} />
+    return <CartView />
   }
   renderItems() {
-    let { cart } = this.state;
-    return <ItemList onBuy={e => this.addToCart(e)} cart={cart}/>
+    return <ItemList />
   }
   render() {
-    let { cart } = this.state;
     return (
       <div className="container">
         <Navbar title="eat-IT" />
         <hr />
-        <CartBadge value={Object.keys(cart).length} />
-        <hr /> 
+        <CartBadge />
+        <hr />
         <Router>
           <div>
             <ul className="nav nav-pills">
@@ -79,4 +64,9 @@ class App extends React.Component {
   }
 }
 
-export default App;
+function mapDisptachToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ loadCart }, dispatch)
+  }
+}
+export default connect(null, mapDisptachToProps)(App);
