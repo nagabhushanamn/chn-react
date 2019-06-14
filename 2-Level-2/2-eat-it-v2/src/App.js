@@ -2,10 +2,12 @@ import React from 'react';
 import Navbar from './components/Navbar'
 import Item from './components/Item';
 import CartBadge from './components/CartBadge';
+import CartView from './components/CartView';
 
 class App extends React.Component {
   state = {
-    cart: [],
+    isCartOpen: false,
+    cart: {},
     items: [
       {
         id: 111,
@@ -26,31 +28,57 @@ class App extends React.Component {
     ]
   }
 
+  toggleCart(e) {
+    e.preventDefault();
+    let { isCartOpen } = this.state;
+    this.setState({ isCartOpen: !isCartOpen })
+  }
+
   addToCart(e) {
     let { item } = e;
+    let { id } = item;
     let { cart } = this.state;
-    cart = cart.concat(item)
+    let itemLine = cart[id];
+    if (!itemLine) {
+      itemLine = { item, qty: 1 }
+    } else {
+      itemLine = { item, qty: itemLine.qty + 1 }
+    }
+    cart = { ...cart, [id]: itemLine }
     this.setState({ cart })
   }
 
+  renderCart() {
+    let { isCartOpen, cart } = this.state;
+    if (isCartOpen)
+      return <CartView value={cart} />
+  }
   renderItems() {
-    let { items, currentTab } = this.state;
-    return items.map((item, idx) => {
-      return (
-        <div key={idx} className="list-group-item">
-          <Item value={item} onBuy={e => this.addToCart(e)} />
-        </div>
-      )
-    })
+    let { items, isCartOpen } = this.state;
+    if (!isCartOpen)
+      return items.map((item, idx) => {
+        return (
+          <div key={idx} className="list-group-item">
+            <Item value={item} onBuy={e => this.addToCart(e)} />
+          </div>
+        )
+      })
   }
   render() {
-    let { cart } = this.state;
+    let { cart, isCartOpen } = this.state;
     return (
       <div className="container">
         <Navbar title="eat-IT" />
         <hr />
-        <CartBadge value={cart.length} />
+        <CartBadge value={Object.keys(cart).length} />
         <hr />
+        <ul className="nav nav-pills">
+          <li className="nav-item">
+            <a onClick={e => this.toggleCart(e)} className="nav-link" href="/">{isCartOpen ? 'Items' : 'Cart'}</a>
+          </li>
+        </ul>
+        <hr />
+        {this.renderCart()}
         {this.renderItems()}
       </div>
     );
