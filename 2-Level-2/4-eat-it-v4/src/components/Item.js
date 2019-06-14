@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
 import Review from './Review';
-
-
+import axios from 'axios'
+ 
 class Item extends Component {
     state = {
         currentTab: 1,
-        reviews: [
-            { stars: 3, author: 'who@mail.com', body: 'this is not good' },
-            { stars: 5, author: 'who@mail.com', body: 'this is too good' }
-        ]
+        reviews: []
     }
     changeTab(e, tabIndex) {
         e.preventDefault();
-        this.setState({ currentTab: tabIndex })
+        this.setState({ currentTab: tabIndex }, () => {
+            if (tabIndex === 3) {
+                let { value: item } = this.props;
+                let { id } = item;
+                let apiUrl = `http://localhost:8181/api/items/${id}/reviews`;
+                axios
+                    .get(apiUrl)
+                    .then(response => response.data)
+                    .then(reviews => {
+                        reviews = reviews || []
+                        this.setState({ reviews })
+                    })
+            }
+        })
     }
     renderReviews() {
         let { reviews } = this.state;

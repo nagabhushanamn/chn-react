@@ -16,7 +16,7 @@ class App extends React.Component {
   }
 
   addToCart(e) {
-    let { item } = e;
+    let { item } = e; 
     let { id } = item;
     let { cart } = this.state;
     let itemLine = cart[id];

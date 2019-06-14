@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import Item from './Item'
 
+import axios from 'axios';
+
 class ItemList extends Component {
     state = {
-        items: [
-            {
-                id: 111,
-                name: 'Veg',
-                price: 170,
-                canBuy: true,
-                image: 'images/veg1.png',
-                description: 'veg is yummy'
-            },
-            {
-                id: 222,
-                name: 'NonVeg',
-                price: 160,
-                canBuy: true,
-                image: 'images/non-veg1.png',
-                description: 'non-veg yummy too'
-            }
-        ]
+        items: []
+    }
+    componentDidMount() {
+        let apiUrl = "http://localhost:8181/api/items";
+        axios
+            .get(apiUrl)
+            .then(response => response.data)
+            .then(items => {
+                this.setState({ items })
+            })
     }
     renderItems() {
         let { items } = this.state;
@@ -35,7 +29,7 @@ class ItemList extends Component {
                 </div>
             )
         })
-    }
+    } 
     render() {
         return (
             <div>
